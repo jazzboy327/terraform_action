@@ -13,7 +13,7 @@ on:
     paths:
       - 'environments/dev/**'
       - 'modules/**'
-  workflow_dispatch:  # 이 라인이 수동 실행을 가능하게 함
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -31,7 +31,7 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
     environment: dev
-    
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,6 +50,9 @@ jobs:
 
       - name: Terraform Init
         working-directory: ${{ env.TF_WORKING_DIR }}
+        env:
+          TF_LOG: DEBUG
+          TF_LOG_PATH: terraform-debug.log
         run: terraform init
 
       - name: Terraform Format Check
@@ -62,9 +65,11 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform plan -out=tfplan
         env:
+          TF_LOG: DEBUG
+          TF_LOG_PATH: terraform-debug.log
           ARM_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
+        run: terraform plan -out=tfplan
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
@@ -79,9 +84,9 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Plan 📝
-            \`\`\`\n
+            
             ${process.env.PLAN || 'No changes. Infrastructure is up-to-date.'}
-            \`\`\`
+            
             `;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
@@ -93,6 +98,15 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform apply tfplan
         env:
+          TF_LOG: DEBUG
+          TF_LOG_PATH: terraform-debug.log
           ARM_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
+        run: terraform apply tfplan
+
+      - name: Upload debug log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-logs
+          path: environments/dev/terraform-debug.log
