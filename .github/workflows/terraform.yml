@@ -48,13 +48,13 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-
-permissions:
-  id-token: write
-  contents: read
   
 jobs:
   terraform:
+    permissions:
+      id-token: write # Require write permission to Fetch an OIDC token.
+      contents: read
+    
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: dev
