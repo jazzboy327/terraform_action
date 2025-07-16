@@ -34,8 +34,8 @@ jobs:
         run: |
           mkdir -p ${{ env.TF_WORKING_DIR }}/tfvars
           echo "${{ github.event.issue.body }}" > issue.txt
-          bash scripts/parse-issue-to-tfvars.sh issue.txt > ${{ env.TF_WORKING_DIR }}/tfvars/terraform.tfvars
-          echo 'admin_password = "'$VM_ADMIN_PASSWORD'"' >> ${{ env.TF_WORKING_DIR }}/tfvars/terraform.tfvars
+          bash scripts/parse-issue-to-tfvars.sh issue.txt > ${{ env.TF_WORKING_DIR }}/terraform.tfvars
+          echo 'admin_password = "'$VM_ADMIN_PASSWORD'"' >> ${{ env.TF_WORKING_DIR }}/terraform.tfvars
 
       - name: Login to Azure with OIDC
         uses: azure/login@v2
