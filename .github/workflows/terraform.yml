@@ -64,13 +64,20 @@ jobs:
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform validate
 
+      - name: Print tfvars
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          echo "==== terraform.tfvars 내용 ===="
+          cat terraform.tfvars
+          echo "==============================="
+
       - name: Terraform Plan
         working-directory: ${{ env.TF_WORKING_DIR }}
         env:
           TF_LOG: DEBUG
           TF_LOG_PATH: terraform-debug.log
           ARM_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
-        run: terraform plan -out=tfplan
+        run: terraform plan -var-file=terraform.tfvars -out=tfplan
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
