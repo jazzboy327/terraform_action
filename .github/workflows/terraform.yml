@@ -31,17 +31,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Save issue body to env
-        run: echo "ISSUE_BODY<<EOF" >> $GITHUB_ENV
-          ${{ github.event.issue.body }}
-          EOF
+        run: |
+          echo 'ISSUE_BODY<<EOF' >> $GITHUB_ENV
+          echo "${{ github.event.issue.body }}" >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
 
       - name: Print issue body from env
         run: echo "$ISSUE_BODY"
 
       - name: Parse issue body to terraform.tfvars
         run: |
-          
-          echo "${{ github.event.issue.body }}" > issue.txt
+          echo "$ISSUE_BODY" > issue.txt
           bash scripts/parse-issue-to-tfvars.sh issue.txt > ${{ env.TF_WORKING_DIR }}/terraform.tfvars
           echo "==== terraform.tfvars 내용 ===="
           cat ${{ env.TF_WORKING_DIR }}/terraform.tfvars
