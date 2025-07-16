@@ -83,30 +83,6 @@ jobs:
           ARM_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
         run: terraform plan -var-file=terraform.tfvars -out=tfplan
 
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-
-      - name: Update Pull Request
-        uses: actions/github-script@v7
-        if: github.event_name == 'issues'
-        env:
-          PLAN: "${{ steps.plan.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Terraform Plan 📝
-            
-            ${process.env.PLAN || 'No changes. Infrastructure is up-to-date.'}
-            
-            `;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
-
       - name: Terraform Apply
         working-directory: ${{ env.TF_WORKING_DIR }}
         env:
