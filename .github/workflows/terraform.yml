@@ -70,7 +70,7 @@ jobs:
           TF_LOG: DEBUG
           TF_LOG_PATH: terraform-debug.log
           ARM_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan -var-file=tfvars/terraform.tfvars
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
@@ -103,7 +103,7 @@ jobs:
           TF_LOG: DEBUG
           TF_LOG_PATH: terraform-debug.log
           ARM_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
-        run: terraform apply tfplan -var="vm_admin_password=${{ env.VM_ADMIN_PASSWORD }}"
+        run: terraform apply tfplan -var-file=tfvars/terraform.tfvars
 
       - name: Upload debug log
         if: always()
