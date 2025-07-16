@@ -30,11 +30,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Save issue body to env
-        run: |
-          printf 'ISSUE_BODY<<EOF\n%s\nEOF\n' "${{ github.event.issue.body }}" >> $GITHUB_ENV
-
-
       - name: Print issue body from env
         run: echo "$ISSUE_BODY"
 
