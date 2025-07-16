@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-
+  workflow_dispatch:  # 이 라인이 수동 실행을 가능하게 함
 permissions:
   id-token: write
   contents: read
