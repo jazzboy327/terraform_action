@@ -69,7 +69,7 @@ jobs:
           TF_LOG: DEBUG
           TF_LOG_PATH: terraform-debug.log
           ARM_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan -lock=false
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
