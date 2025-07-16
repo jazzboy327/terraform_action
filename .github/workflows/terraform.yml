@@ -39,9 +39,6 @@ jobs:
       - name: Parse issue to tfvars
         run: |
           bash scripts/parse-issue-to-tfvars.sh issue.txt > ${{ env.TF_WORKING_DIR }}/terraform.tfvars
-          echo "==== terraform.tfvars 내용 ===="
-          cat ${{ env.TF_WORKING_DIR }}/terraform.tfvars
-          echo "==============================="
           echo 'admin_password = "'$VM_ADMIN_PASSWORD'"' >> ${{ env.TF_WORKING_DIR }}/terraform.tfvars
           echo "==== terraform.tfvars 내용 ===="
           cat ${{ env.TF_WORKING_DIR }}/terraform.tfvars
@@ -68,7 +65,9 @@ jobs:
 
       - name: Terraform Format Check
         working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform fmt -check -recursive
+        run: |
+          terraform fmt
+          terraform fmt -check -recursive
 
       - name: Terraform Validate
         working-directory: ${{ env.TF_WORKING_DIR }}
@@ -120,7 +119,7 @@ jobs:
           TF_LOG: DEBUG
           TF_LOG_PATH: terraform-debug.log
           ARM_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
-        run: terraform apply tfplan
+        run: terraform apply tfplan 
 
       - name: Upload debug log
         if: always()
