@@ -32,10 +32,16 @@ jobs:
 
       - name: Parse issue body to terraform.tfvars
         run: |
-          mkdir -p ${{ env.TF_WORKING_DIR }}/tfvars
+          
           echo "${{ github.event.issue.body }}" > issue.txt
           bash scripts/parse-issue-to-tfvars.sh issue.txt > ${{ env.TF_WORKING_DIR }}/terraform.tfvars
+          echo "==== terraform.tfvars 내용 ===="
+          cat ${{ env.TF_WORKING_DIR }}/terraform.tfvars
+          echo "==============================="
           echo 'admin_password = "'$VM_ADMIN_PASSWORD'"' >> ${{ env.TF_WORKING_DIR }}/terraform.tfvars
+          echo "==== terraform.tfvars 내용 ===="
+          cat ${{ env.TF_WORKING_DIR }}/terraform.tfvars
+          echo "==============================="
 
       - name: Login to Azure with OIDC
         uses: azure/login@v2
