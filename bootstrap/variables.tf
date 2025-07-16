@@ -7,7 +7,7 @@ variable "location" {
 }
 
 variable "storage_account_name" {
-  default = "tfstatestorage123"  # 고유해야 함
+  default = "axdtfstatestorageac"  # 고유해야 함
 }
 
 variable "container_name" {
