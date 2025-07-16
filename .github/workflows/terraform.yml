@@ -30,6 +30,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Save issue body to env
+        run: echo "ISSUE_BODY<<EOF" >> $GITHUB_ENV
+          ${{ github.event.issue.body }}
+          EOF
+
+      - name: Print issue body from env
+        run: echo "$ISSUE_BODY"
+
       - name: Parse issue body to terraform.tfvars
         run: |
           
