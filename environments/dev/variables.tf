@@ -19,16 +19,16 @@ variable "vm_name" {
 }
 
 variable "vm_size" {
-  type = string
+  type    = string
   default = "Standard_B1s"
 }
 
 variable "admin_username" {
-  type = string
+  type    = string
   default = "azureuser"
 }
 
 variable "admin_password" {
-  type = string
+  type      = string
   sensitive = true
 }

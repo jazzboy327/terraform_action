@@ -5,7 +5,7 @@ terraform {
     container_name       = "tfstate"
     key                  = "dev/terraform.tfstate"
   }
-  
+
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
