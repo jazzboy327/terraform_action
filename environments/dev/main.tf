@@ -2,6 +2,16 @@ provider "azurerm" {
   features {}
 }
 
+locals {
+  common_tags = {
+    Environment = var.environment
+    Team        = var.team_name
+    Service     = var.service_name
+    Owner       = "kt"
+    Created     = timestamp()
+  }
+}
+
 module "rg" {
   source   = "../../modules/resource_group"
   name     = var.resource_group_name
@@ -26,6 +36,7 @@ module "vm" {
   admin_username      = var.admin_username
   admin_password      = var.admin_password
   subnet_id           = module.vnet.subnet_id
+  tags                = local.common_tags
 }
 
 

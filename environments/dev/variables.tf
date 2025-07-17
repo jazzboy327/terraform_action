@@ -32,3 +32,15 @@ variable "admin_password" {
   type      = string
   sensitive = true
 }
+
+variable "environment" {
+  type = string
+}
+
+variable "team_name" {
+  type = string
+}
+
+variable "service_name" {
+  type = string
+}
