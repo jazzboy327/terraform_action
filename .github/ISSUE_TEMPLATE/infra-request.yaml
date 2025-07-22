@@ -1,0 +1,68 @@
+name: 인프라 요청 (Terraform)
+description: 새로운 인프라 리소스 생성을 요청합니다.
+title: "[인프라요청] <팀이름> - <리소스 설명>"
+labels: [infra-request]
+body:
+  - type: input
+    id: environment
+    attributes:
+      label: 환경 (예: dev, stage, prod)
+      placeholder: 예: dev
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Azure 리전
+      placeholder: 예: koreacentral
+    validations:
+      required: true
+
+  - type: input
+    id: resource_group
+    attributes:
+      label: 리소스 그룹 이름
+      placeholder: 예: dev-rg
+    validations:
+      required: true
+
+  - type: input
+    id: vnet_name
+    attributes:
+      label: VNet 이름
+      placeholder: 예: dev-vnet
+    validations:
+      required: true
+
+  - type: input
+    id: vnet_cidr
+    attributes:
+      label: VNet CIDR
+      placeholder: 예: ["10.0.0.0/16"]
+    validations:
+      required: true
+
+  - type: input
+    id: vm_name
+    attributes:
+      label: VM 이름
+      placeholder: 예: dev-vm
+    validations:
+      required: true
+
+  - type: input
+    id: vm_size
+    attributes:
+      label: VM 크기
+      placeholder: 예: Standard_B1s
+    validations:
+      required: true
+
+  - type: input
+    id: admin_username
+    attributes:
+      label: VM 관리자 계정
+      placeholder: 예: azureuser
+    validations:
+      required: true

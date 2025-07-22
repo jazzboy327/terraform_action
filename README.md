@@ -87,4 +87,3 @@ terraform apply
 ## 주의사항
 
 - `admin_password`는 실제 환경에서는 더 안전한 방법으로 관리해야 합니다
-- 프로덕션 환경에서는 Terraform Cloud나 Azure DevOps를 사용하는 것을 권장합니다

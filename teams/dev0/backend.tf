@@ -3,7 +3,7 @@ terraform {
     resource_group_name  = "tf-backend-rg"
     storage_account_name = "axdtfstatestorageac" # only lowcase!!  
     container_name       = "tfstate"
-    key                  = "dev/terraform.tfstate"
+    key                  = "teams/dev0/terraform.tfstate"
   }
 
   required_providers {

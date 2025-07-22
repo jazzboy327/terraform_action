@@ -24,7 +24,7 @@ crash.log
 
 # 플랜 파일 (apply 전에 생성되는 중간 파일)
 *.tfplan
-
+tfplan
 # .terraformrc 파일 (사용자 설정, 인증정보 포함 가능)
 .terraformrc
 terraform.rc

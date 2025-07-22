@@ -5,3 +5,9 @@ variable "name" {
 variable "location" {
   type = string
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "Common resource tags"
+  default     = {}
+} 
