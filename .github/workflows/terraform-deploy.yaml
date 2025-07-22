@@ -80,11 +80,9 @@ jobs:
           terraform validate
 
       - name: Terraform Plan
-        if: github.event.action != 'closed'
         working-directory: ${{ steps.team-dir.outputs.team_dir }}
         run: terraform plan -var-file=terraform.tfvars -out=tfplan
 
       - name: Terraform Apply
-        if: github.event.pull_request.merged == true
         working-directory: ${{ steps.team-dir.outputs.team_dir }}
         run: terraform apply tfplan 
