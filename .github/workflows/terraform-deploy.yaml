@@ -29,6 +29,8 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
 
       - name: Login to Azure with OIDC
         uses: azure/login@v2
@@ -42,27 +44,28 @@ jobs:
         with:
           terraform_version: "1.5.0"    
 
-      - name: Detect modified team directory
-        id: changes
+      - name: Get changed files in PR
+        id: diff-check
         run: |
-            echo "Changed files:"
+              echo "🔍 Changed files between base and head of PR"
         
-            # 이전 커밋과 현재 커밋의 diff 확인
-            git diff --name-only ${{ github.event.before }} ${{ github.sha }} | tee diff.txt
-        
-            echo "==== diff.txt 내용 ===="
-            cat diff.txt
-            echo "======================="
-        
-            TEAM_DIR=$(cat diff.txt | grep '^teams/' | cut -d '/' -f1-2 | uniq | head -n 1)
-        
-            if [[ -z "$TEAM_DIR" ]]; then
-              echo "❌ No team directory found. Exiting."
-              exit 1
-            fi
-        
-            echo "Detected team directory: $TEAM_DIR"
-            echo "team_dir=$TEAM_DIR" >> $GITHUB_OUTPUT
+              git fetch origin ${{ github.event.pull_request.base.ref }}
+          
+              git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | tee diff.txt
+          
+              echo "==== diff.txt 내용 ===="
+              cat diff.txt
+              echo "======================="
+          
+              TEAM_DIR=$(cat diff.txt | grep '^teams/' | cut -d '/' -f1-2 | uniq | head -n 1)
+          
+              if [[ -z "$TEAM_DIR" ]]; then
+                echo "❌ No team directory found. Exiting."
+                exit 1
+              fi
+          
+              echo "✅ Detected team directory: $TEAM_DIR"
+              echo "team_dir=$TEAM_DIR" >> $GITHUB_OUTPUT
 
       - name: Parse issue to tfvars 
         run: |
