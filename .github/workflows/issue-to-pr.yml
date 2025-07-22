@@ -3,6 +3,7 @@ name: Issue to Terraform PR
 on:
   issues:
     types: [opened, edited]
+  workflow_dispatch:
 
 permissions:
   contents: write
