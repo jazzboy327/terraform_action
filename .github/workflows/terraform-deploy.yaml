@@ -74,7 +74,10 @@ jobs:
 
       - name: Terraform Format Check
         working-directory: ${{ steps.team-dir.outputs.team_dir }}
-        run: terraform fmt -check -recursive
+        run: |
+          terraform fmt
+          terraform fmt -check -recursive
+          terraform validate
 
       - name: Terraform Plan
         if: github.event.action != 'closed'
