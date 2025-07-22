@@ -2,7 +2,6 @@
 
 TEAM=$1
 
-mkdir -p "./teams/${TEAM}"
 
 cat > "./teams/${TEAM}/backend.tf" <<EOF
 terraform {
