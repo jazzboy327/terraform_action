@@ -1,39 +1,42 @@
-resource "azurerm_network_interface" "vm_nic" {
-  name                = "${var.vm_name}-nic"
-  location            = var.location
-  resource_group_name = var.resource_group_name
+provider "azurerm" {
+  features {}
+}
 
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = var.subnet_id
-    private_ip_address_allocation = "Dynamic"
+locals {
+  common_tags = {
+    Environment = var.environment
+    Team        = var.team_name
+    Service     = var.service_name
+    Owner       = "kt"
+    Created     = timestamp()
   }
 }
 
-resource "azurerm_linux_virtual_machine" "vm" {
-  name                = var.vm_name
-  resource_group_name = var.resource_group_name
+module "rg" {
+  source   = "../../modules/resource_group"
+  name     = var.resource_group_name
+  location = var.location
+}
+
+module "vnet" {
+  source                  = "../../modules/network"
+  vnet_name               = var.vnet_name
+  location                = var.location
+  resource_group_name     = module.rg.name
+  address_space           = var.address_space
+  subnet_address_prefixes = ["10.0.1.0/24"]
+}
+
+module "vm" {
+  source              = "../../modules/vm"
+  vm_name             = var.vm_name
   location            = var.location
-  size                = var.vm_size
+  resource_group_name = module.rg.name
+  vm_size             = var.vm_size
   admin_username      = var.admin_username
   admin_password      = var.admin_password
-  disable_password_authentication = false
+  subnet_id           = module.vnet.subnet_id
+  tags                = local.common_tags
+}
 
-  network_interface_ids = [
-    azurerm_network_interface.vm_nic.id,
-  ]
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
-
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
-    version   = "latest"
-  }
-
-  tags = var.tags
-} 
