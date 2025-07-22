@@ -3,7 +3,7 @@
 .vscode/
 
 .env
-
+diff.txt
 
 # Terraform 상태 파일
 *.tfstate
