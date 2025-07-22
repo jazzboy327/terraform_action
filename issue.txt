@@ -7,4 +7,4 @@
 - VM 크기: Standard_B1s
 - 관리자 계정: azureuser
 - 서비스명: axd_playgroud
-- 팀명: dev3
+- 팀명: dev4
