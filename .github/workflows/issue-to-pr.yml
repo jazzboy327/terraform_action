@@ -28,7 +28,7 @@ jobs:
           EOF
           
           # issue.txt 파일에서 팀명 추출 (- 팀명: "dev3")
-          TEAM_NAME=$(grep '^팀명:' issue.txt | cut -d: -f2 | xargs)
+          TEAM_NAME=$(grep -E '^[[:space:]]*-?[[:space:]]*팀명:' issue.txt | head -n1 | cut -d: -f2- | xargs)
           echo "TEAM_NAME: $TEAM_NAME"
           echo "team_dir=teams/${TEAM_NAME}" >> "$GITHUB_OUTPUT"
 
