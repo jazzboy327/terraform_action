@@ -45,17 +45,13 @@ jobs:
           terraform_version: "1.5.0"    
 
       - name: Get changed files in PR
-        id: diff-check
+        id: team-dir
         run: |
               echo "🔍 Changed files between base and head of PR"
         
               # 이전 커밋과 현재 커밋의 diff 확인
               git diff --name-only ${{ github.event.before }} ${{ github.sha }} | tee diff.txt
-              
-              echo "==== diff.txt 내용 ===="
-              cat diff.txt
-              echo "======================="
-          
+
               TEAM_DIR=$(cat diff.txt | grep '^teams/' | cut -d '/' -f1-2 | uniq | head -n 1)
           
               if [[ -z "$TEAM_DIR" ]]; then
@@ -63,30 +59,29 @@ jobs:
                 exit 1
               fi
           
-              echo "✅ Detected team directory: $TEAM_DIR"
+              echo "Detected team directory: $TEAM_DIR"
               echo "team_dir=$TEAM_DIR" >> $GITHUB_OUTPUT
 
       - name: Parse issue to tfvars 
         run: |
-          TEAM_DIR="${{ steps.changes.outputs.team_dir }}"
+          TEAM_DIR="${{ steps.team-dir.outputs.team_dir }}"
           bash scripts/parse-issue-to-tfvars.sh "$TEAM_DIR/issue.txt" > "$TEAM_DIR/terraform.tfvars"
           echo 'admin_password = "'$VM_ADMIN_PASSWORD'"' >> "$TEAM_DIR/terraform.tfvars"
 
-
       - name: Terraform Init
-        working-directory: ${{ steps.changes.outputs.team_dir }}
+        working-directory: ${{ steps.team-dir.outputs.team_dir }}
         run: terraform init 
 
       - name: Terraform Format Check
-        working-directory: ${{ steps.changes.outputs.team_dir }}
+        working-directory: ${{ steps.team-dir.outputs.team_dir }}
         run: terraform fmt -check -recursive
 
       - name: Terraform Plan
         if: github.event.action != 'closed'
-        working-directory: ${{ steps.changes.outputs.team_dir }}
+        working-directory: ${{ steps.team-dir.outputs.team_dir }}
         run: terraform plan -var-file=terraform.tfvars -out=tfplan
 
       - name: Terraform Apply
         if: github.event.pull_request.merged == true
-        working-directory: ${{ steps.changes.outputs.team_dir }}
+        working-directory: ${{ steps.team-dir.outputs.team_dir }}
         run: terraform apply tfplan 
