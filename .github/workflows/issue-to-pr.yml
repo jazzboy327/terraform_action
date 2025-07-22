@@ -38,7 +38,7 @@ jobs:
           mkdir -p "$TEAM_DIR"
           bash scripts/parse-issue-to-tfvars.sh issue.txt > "$TEAM_DIR/terraform.tfvars"
           echo 'admin_password = "'$VM_ADMIN_PASSWORD'"' >> "$TEAM_DIR/terraform.tfvars"
-          cp template/main.tf variables.tf output.tf "$TEAM_DIR/"
+          cp template/* "$TEAM_DIR/"
           bash scripts/create_team_tf.sh "$TEAM_NAME"
 
       - name: Create Pull Request
