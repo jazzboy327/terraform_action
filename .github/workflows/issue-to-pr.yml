@@ -48,31 +48,31 @@ jobs:
           mkdir -p "$TEAM_DIR"
 
           cat <<EOF > "$TEAM_DIR/terraform.tfvars"
-                        location       = "${LOC}"
-                        resource_group = "${RG}"
-                        vnet_name      = "${VNET}"
-                        address_space  = ${CIDR}
-                        vm_name        = "${VM_NAME}"
-                        vm_size        = "${VM_SIZE}"
-                        admin_username = "${ADMIN}"
-                        service_name   = "${SERVICE_NAME}"
-                        team_name      = "${TEAM_NAME}"
-                        EOF
+location       = "${LOC}"
+resource_group = "${RG}"
+vnet_name      = "${VNET}"
+address_space  = ${CIDR}
+vm_name        = "${VM_NAME}"
+vm_size        = "${VM_SIZE}"
+admin_username = "${ADMIN}"
+service_name   = "${SERVICE_NAME}"
+team_name      = "${TEAM_NAME}"
+EOF
 
-                                cat <<EOF > "$TEAM_DIR/main.tf"
-                        module "infra" {
-                        source           = "../../modules/vm"
-                        location         = var.location
-                        resource_group   = var.resource_group
-                        vnet_name        = var.vnet_name
-                        address_space    = var.address_space
-                        vm_name          = var.vm_name
-                        vm_size          = var.vm_size
-                        admin_username   = var.admin_username
-                        service_name     = var.service_name
-                        team_name        = var.team_name
-                        }
-                EOF
+          cat <<EOF > "$TEAM_DIR/main.tf"
+module "infra" {
+  source           = "../../modules/vm"
+  location         = var.location
+  resource_group   = var.resource_group
+  vnet_name        = var.vnet_name
+  address_space    = var.address_space
+  vm_name          = var.vm_name
+  vm_size          = var.vm_size
+  admin_username   = var.admin_username
+  service_name     = var.service_name
+  team_name        = var.team_name
+}
+EOF
 
           echo "team_dir=${TEAM_DIR}" >> $GITHUB_OUTPUT
 
