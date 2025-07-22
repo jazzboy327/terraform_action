@@ -1,0 +1,10 @@
+- 환경: dev
+- 위치: koreacentral
+- 리소스 그룹: dev-rg
+- VNet: dev-vnet
+- CIDR: ["10.0.0.0/16"]
+- VM 이름: dev-vm
+- VM 크기: Standard_B1s
+- 관리자 계정: azureuser
+- 서비스명: axd_playgroud
+- 팀명: dev7
