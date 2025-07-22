@@ -27,9 +27,13 @@ jobs:
           ${{ github.event.issue.body }}
           EOF
 
+          echo "github.event.issue.body: ${{ github.event.issue.body }}"
+          echo "issue.txt: $(cat issue.txt)"
+
           ISSUE_BODY=$(cat issue.txt)
           RG=$(echo "$ISSUE_BODY" | grep '^리소스 그룹:' | cut -d: -f2 | xargs)
           TEAM_NAME=$(echo "$ISSUE_BODY" | grep '^팀명:' | cut -d: -f2 | xargs)
+          
           echo "team_dir=teams/${TEAM_NAME}" >> "$GITHUB_OUTPUT"
 
       - name: Parse issue to tfvars and copy template files
