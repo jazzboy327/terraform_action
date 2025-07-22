@@ -23,7 +23,8 @@ variable "admin_password" {
 }
 
 variable "subnet_id" {
-  type = string
+  description = "VM이 연결될 Subnet의 ID"
+  type        = string
 }
 
 variable "tags" {

@@ -22,10 +22,6 @@ variable "admin_password" {
   type = string
 }
 
-variable "subnet_id" {
-  type = string
-}
-
 variable "environment" {
   description = "환경(dev, stage, prod 등)"
   type        = string
