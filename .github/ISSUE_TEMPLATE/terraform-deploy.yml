@@ -8,7 +8,7 @@ body:
       label: 📄 요청내역
       description: 생성할 리소스 대한 설명을 작성해 주세요.
       value: |
-        # 양식에 맞춰 작성해 주세요.
+        # (예시) 양식에 맞춰 작성해 주세요.
         - 환경: dev
         - 위치: koreacentral
         - 리소스 그룹: dev-rg
