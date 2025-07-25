@@ -16,7 +16,7 @@ variable "address_space" {
 
 variable "subnet_address_prefixes" {
   type = list(string)
-  default = ["172.0.0.0/24"]
+  default = ["172.0.1.0/24"]
 }
 
 variable "tags" {
