@@ -46,7 +46,10 @@ variable "address_space" {
   description = "VNet CIDR"
   type        = list(string)
 } 
-
+variable subnet_address_prefixes{
+  description = "subnet "
+  type        = list(string)
+}
 variable "tags" {
   type        = map(string)
   description = "Common resource tags"

@@ -24,7 +24,7 @@ module "vnet" {
   location                = var.location
   resource_group_name     = module.rg.name
   address_space           = var.address_space
-  subnet_address_prefixes = ["10.0.1.0/24"]
+  subnet_address_prefixes = var.subnet_address_prefixes
 }
 
 module "vm" {
